@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "VolleyballApp": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "API_KEY": "5b55eefabea02d56c48f98bf33467cd8"
+      },
+      "remoteDebugEnabled": true
+    }
+  }
+}

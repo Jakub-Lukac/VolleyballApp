@@ -10,10 +10,10 @@ using static VolleyballApp.Models.GamesModels;
 
 namespace VolleyballApp.Services
 {
-    static public class VolleyballAPI
+    public static class VolleyballAPI
     {
         private static readonly string BaseUrl = "https://v1.volleyball.api-sports.io";
-        private static readonly string ApiKey = "YOUR_API_KEY";
+        private static readonly string ApiKey = Environment.GetEnvironmentVariable("API_KEY");
 
         private static async Task<string> HttpGet(string endpoint, Dictionary<string, string> queryParams = null)
         {
@@ -41,19 +41,31 @@ namespace VolleyballApp.Services
         public static async Task<List<Game>> GetGamesAsync(string date)
         {
             var json = await HttpGet("games", new Dictionary<string, string> { { "date", date } });
-            return JsonSerializer.Deserialize<GameResponse>(json)?.Response ?? new List<Game>();
+            return JsonSerializer.Deserialize<GameResponse>(json)?.Response ?? [];
         }
 
-        public static async Task<List<League>> GetLeaguesAsync()
+        public static async Task<List<League>> GetLeaguesLogosAsync(List<int> leagueIds)
         {
-            var json = await HttpGet("leagues");
-            return JsonSerializer.Deserialize<LeagueResponse>(json)?.Response ?? new List<League>();
+            var leagues = new List<League>();
+
+            foreach (var id in leagueIds)
+            {
+                var json = await HttpGet("leagues", new Dictionary<string, string> { { "id", id.ToString() } });
+                var response = JsonSerializer.Deserialize<LeagueResponse>(json);
+
+                if (response?.Response != null)
+                    leagues.AddRange(response.Response);
+            }
+
+            return leagues;
         }
 
-        public static async Task<List<Standing>> GetStandingsAsync(int leagueId, int season)
-        {
-            var json = await HttpGet("standings", new Dictionary<string, string> { { "league", leagueId.ToString() }, { "season", season.ToString() } });
-            return JsonSerializer.Deserialize<StandingsResponse>(json)?.Response ?? new List<Standing>();
-        }
+        /*
+         * UI
+         * horizonal list of logos -> can click on logo to display games in that leage
+         * underneath bar (stretched) -> left option(Yesterday), middle option(Today), right option(Tomorrow)
+         * underneath that 4 buttons - Finished, Started, Postponed, Cancelled
+         * undearneath that display based on filters above list of games
+         */
     }
 }
