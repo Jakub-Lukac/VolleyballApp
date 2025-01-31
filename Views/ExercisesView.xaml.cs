@@ -14,17 +14,17 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using VolleyballApp.ViewModels;
 
-namespace VolleyballApp
+namespace VolleyballApp.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ExercisesView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ExercisesView : UserControl
     {
-        public MainWindow(MainViewModel vm)
+        public ExercisesView()
         {
             InitializeComponent();
-            DataContext = vm;
+            DataContext = new ExercisesViewModel();
         }
     }
 }
