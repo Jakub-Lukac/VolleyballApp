@@ -21,10 +21,10 @@ namespace VolleyballApp.Views
     /// </summary>
     public partial class GamesView : UserControl
     {
-        public GamesView()
+        public GamesView(GamesViewModel vm)
         {
             InitializeComponent();
-            DataContext = new GamesViewModel();
+            DataContext = vm;
         }
     }
 }

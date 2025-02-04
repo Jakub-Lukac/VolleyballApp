@@ -1,47 +1,48 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows;
+using VolleyballApp.Services;
 using static VolleyballApp.Models.GamesModels;
-using static VolleyballApp.Services.VolleyballAPI;
 
 namespace VolleyballApp.ViewModels
 {
     public partial class GamesViewModel : ObservableObject
     {
+        private readonly DataService _dataService;
+
         [ObservableProperty]
-        public string message = "This is Game Screen";
+        public List<League> leagues = new();
 
-        public GamesViewModel()
+        [ObservableProperty]
+        public List<Game> games = new();
+        public GamesViewModel(DataService dataService)
         {
-           // LoadLeagues();
-           // LoadTodaysGames();
-            LoadYesterdaysGames();
-            //LoadTomorrowsGames();
+            _dataService = dataService;
+            _ = LoadLeaguesAsync();
         }
 
-        private async void LoadLeagues()
+        private async Task LoadLeaguesAsync()
         {
-            var leagues = await GetLeaguesLogosAsync(new List<int> { 98, 99, 100 });
+            Leagues = await _dataService.GetLeaguesAsync();
+            // Leagues is property of leagues, created through ObservableProperty
         }
 
-        private async void LoadTodaysGames()
+        [RelayCommand]
+        public async void SelectLeague(League selectedLeague)
         {
-            var games = await GetGamesAsync(DateTime.Now.ToString("yyyy-MM-dd"));
+            if(selectedLeague != null) 
+            {
+                Games = await _dataService.GetGamesByDateAsync(DateTime.Now.ToString("yyyy-MM-dd"), selectedLeague.Id);   
+            }
         }
 
-        private async void LoadYesterdaysGames()
-        {
-            var games = await GetGamesAsync(DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd"));
-        }
-
-        private async void LoadTomorrowsGames()
-        {
-            var games = await GetGamesAsync(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));
-        }
     }
 }

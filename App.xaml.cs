@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows;
+using VolleyballApp.Services;
 using VolleyballApp.ViewModels;
 using VolleyballApp.Views;
 
@@ -34,6 +35,9 @@ namespace VolleyballApp
             services.AddSingleton<GamesView>();
             services.AddSingleton<PlayerRostersView>();
             services.AddSingleton<ExercisesView>();
+
+            // Register Services
+            services.AddSingleton<DataService>();
 
             // Register MainWindow and inject MainViewModel into it
             services.AddSingleton<MainWindow>();
