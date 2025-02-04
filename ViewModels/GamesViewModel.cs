@@ -19,10 +19,20 @@ namespace VolleyballApp.ViewModels
         private readonly DataService _dataService;
 
         [ObservableProperty]
-        public List<League> leagues = new();
+        private List<League> leagues = new();
 
         [ObservableProperty]
-        public List<Game> games = new();
+        private List<Game> games = new();
+
+        [ObservableProperty]
+        private List<string> filters = new() { "All", "Live", "Canceled", "Finished" };
+
+        [ObservableProperty]
+        private string selectedFilter = "All"; // Default to "All"
+
+        [ObservableProperty]
+        private DateTime selectedDate = DateTime.Now;
+
         public GamesViewModel(DataService dataService)
         {
             _dataService = dataService;
@@ -42,6 +52,13 @@ namespace VolleyballApp.ViewModels
             {
                 Games = await _dataService.GetGamesByDateAsync(DateTime.Now.ToString("yyyy-MM-dd"), selectedLeague.Id);   
             }
+        }
+
+        [RelayCommand]
+        private void SelectFilter(string filter)
+        {
+            SelectedFilter = filter;
+            MessageBox.Show(SelectedFilter);
         }
 
     }

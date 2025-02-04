@@ -4,61 +4,80 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VolleyballApp.Views"
-                     xmlns:viewmodels="clr-namespace:VolleyballApp.ViewModels" 
-        d:DataContext="{d:DesignInstance Type=viewmodels:GamesViewModel}"
+             xmlns:viewmodels="clr-namespace:VolleyballApp.ViewModels" 
+             xmlns:services="clr-namespace:VolleyballApp.Services"
+             d:DataContext="{d:DesignInstance Type=viewmodels:GamesViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <Style x:Key="LeagueButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Width" Value="100"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="LightGray"/>
-                    <Setter Property="Effect">
-                        <Setter.Value>
-                            <DropShadowEffect Color="Black" Direction="270" ShadowDepth="10" BlurRadius="15"/>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+        <ResourceDictionary>
+            <!-- Merging the GamesViewStyles.xaml -->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/GamesViewStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Background="LightBlue">
+    <Grid Background="LightBlue" ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition Height=".2*"/>
-            <RowDefinition Height=".8*"/>
+            <RowDefinition Height=".125*"/>
+            <RowDefinition Height=".675*"/>
         </Grid.RowDefinitions>
 
-        <!-- League Selection -->
-        <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <ItemsControl ItemsSource="{Binding Leagues}">
+        <!-- League selection  -->
+        <ItemsControl ItemsSource="{Binding Leagues}" Grid.Row="0">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" Margin="12"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Command="{Binding DataContext.SelectLeagueCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding}"
+                            Style="{StaticResource LeagueButtonStyle}">
+                        <StackPanel Orientation="Vertical">
+                            <Image Source="{Binding Logo}" Width="60" Height="60"/>
+                            <TextBlock Text="{Binding Name}" FontSize="12" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!-- Filters and Date Selection -->
+        <Grid Grid.Row="1" Margin="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <!-- Badges -->
+                <ColumnDefinition Width="*" />
+                <!-- Spacer (Push DatePicker Right) -->
+                <ColumnDefinition Width="Auto"/>
+                <!-- DatePicker -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Filter Badges (Left-Aligned) -->
+            <ItemsControl ItemsSource="{Binding Filters}" Grid.Column="0">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
+                        <WrapPanel Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Command="{Binding DataContext.SelectLeagueCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                            CommandParameter="{Binding}"
-                            Style="{StaticResource LeagueButtonStyle}">
-                            <StackPanel Orientation="Vertical">
-                                <Image Source="{Binding Logo}" Width="60" Height="60"/>
-                                <TextBlock Text="{Binding Name}" FontSize="12" HorizontalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-
+                        <RadioButton Content="{Binding}" 
+                                     GroupName="Filters"
+                                     Style="{StaticResource CustomRadioButtonStyle}" 
+                                     IsChecked="{Binding DataContext.SelectedFilter, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                                     CommandParameter="{Binding}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </StackPanel>
+
+            <!-- Date Picker (Right-Aligned) -->
+            <DatePicker Grid.Column="2" SelectedDate="{Binding SelectedDate, Mode=OneWay}"/>
+        </Grid>
     </Grid>
 </UserControl>
