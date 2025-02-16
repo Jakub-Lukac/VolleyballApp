@@ -19,18 +19,18 @@
 
    1.1 For fetching games
 
-- GamesReponse
-- Game
-- GameStatus
-- GameLeague
-- Teams
-- Team
-- Scores
-- Periods
-- Period
+   - GamesReponse
+   - Game
+   - GameStatus
+   - GameLeague
+   - Teams
+   - Team
+   - Scores
+   - Periods
+   - Period
 
-  1.2 For fetching leagues
+   1.2 For fetching leagues
 
-- LeagueResponse
-- League
-- CountryInfo
+   - LeagueResponse
+   - League
+   - CountryInfo
