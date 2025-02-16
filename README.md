@@ -29,8 +29,16 @@
    - Periods
    - Period
 
-   1.2 For fetching leagues
+     1.2 For fetching leagues
 
    - LeagueResponse
    - League
    - CountryInfo
+
+2. **Other Objects**
+
+   - Player
+     - Position (enum)
+   - Roster
+   - Exercise
+     - Difficulty (enum)
