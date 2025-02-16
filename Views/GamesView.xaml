@@ -6,78 +6,252 @@
              xmlns:local="clr-namespace:VolleyballApp.Views"
              xmlns:viewmodels="clr-namespace:VolleyballApp.ViewModels" 
              xmlns:services="clr-namespace:VolleyballApp.Services"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DataContext="{d:DesignInstance Type=viewmodels:GamesViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Loaded="UserControl_Loaded">
+
     <UserControl.Resources>
         <ResourceDictionary>
-            <!-- Merging the GamesViewStyles.xaml -->
-            <ResourceDictionary.MergedDictionaries>
+            <!-- Merging external styles -->
+            <!--<ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles/GamesViewStyles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>-->
         </ResourceDictionary>
     </UserControl.Resources>
+
     <Grid Background="LightBlue" ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition Height=".2*"/>
-            <RowDefinition Height=".125*"/>
-            <RowDefinition Height=".675*"/>
+            <!-- League selection -->
+            <RowDefinition Height=".15*"/>
+            <!-- Filters + Date Picker -->
+            <RowDefinition Height=".65*"/>
+            <!-- Main content (Games) -->
         </Grid.RowDefinitions>
 
-        <!-- League selection  -->
-        <ItemsControl ItemsSource="{Binding Leagues}" Grid.Row="0">
-            <ItemsControl.ItemsPanel>
+        <!-- Leagues Selection (ListView) -->
+        <ListView Grid.Row="0" ItemsSource="{Binding Leagues}" 
+          x:Name="lwLeagues"
+          SelectionChanged="lwLeagues_SelectionChanged"
+          SelectedItem="{Binding SelectedLeague, Mode=TwoWay}" 
+          HorizontalAlignment="Stretch"
+          SelectionMode="Single"
+          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+          Background="Transparent"
+          BorderThickness="0">
+
+            <ListView.Resources>
+                <!-- Custom Style for League Items -->
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="10,0"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <Border x:Name="LeagueBorder"
+                                Background="Transparent"
+                                CornerRadius="10"
+                                Padding="5">
+                                    <ContentPresenter/>
+                                </Border>
+
+                                <ControlTemplate.Triggers>
+                                    <!-- Hover Effect -->
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="LeagueBorder" Property="Background" Value="#444444"/>
+                                    </Trigger>
+
+                                    <!-- Selection Effect -->
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="LeagueBorder" Property="Background" Value="#007ACC"/>
+                                        <!-- Custom selection color -->
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.Resources>
+
+            <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal" Margin="12"/>
                 </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+            </ListView.ItemsPanel>
 
-            <ItemsControl.ItemTemplate>
+            <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Button Command="{Binding DataContext.SelectLeagueCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                            CommandParameter="{Binding}"
-                            Style="{StaticResource LeagueButtonStyle}">
+                    <Border Padding="10" CornerRadius="10">
                         <StackPanel Orientation="Vertical">
                             <Image Source="{Binding Logo}" Width="60" Height="60"/>
                             <TextBlock Text="{Binding Name}" FontSize="12" HorizontalAlignment="Center"/>
                         </StackPanel>
-                    </Button>
+                    </Border>
                 </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+            </ListView.ItemTemplate>
+        </ListView>
 
-        <!-- Filters and Date Selection -->
-        <Grid Grid.Row="1" Margin="12">
+        <Grid Grid.Row="1" Margin="5">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400"/>
+                <!-- Filters List -->
+                <ColumnDefinition Width="*"/>
+                <!-- Empty Space -->
                 <ColumnDefinition Width="Auto"/>
-                <!-- Badges -->
-                <ColumnDefinition Width="*" />
-                <!-- Spacer (Push DatePicker Right) -->
-                <ColumnDefinition Width="Auto"/>
-                <!-- DatePicker -->
+                <!-- Date Picker -->
             </Grid.ColumnDefinitions>
 
-            <!-- Filter Badges (Left-Aligned) -->
-            <ItemsControl ItemsSource="{Binding Filters}" Grid.Column="0">
-                <ItemsControl.ItemsPanel>
+            <!-- Filters Selection (ListView) -->
+            <ListView Grid.Column="0" ItemsSource="{Binding Filters}"
+                  x:Name="lwFilters"
+                  SelectionChanged="lwFilters_SelectionChanged"
+                  SelectedItem="{Binding SelectedFilter, Mode=TwoWay}" 
+                  HorizontalAlignment="Stretch"
+                  SelectionMode="Single"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  Background="Transparent"
+                  BorderThickness="0">  
+
+                <ListView.Resources>
+                    <!-- Custom Style for Filter Items -->
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <Border x:Name="FilterBorder"
+                                Background="Transparent"
+                                CornerRadius="10"
+                                Padding="10">
+                                        <ContentPresenter/>
+                                    </Border>
+
+                                    <ControlTemplate.Triggers>
+                                        <!-- Hover Effect -->
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="FilterBorder" Property="Background" Value="#444444"/>
+                                        </Trigger>
+
+                                        <!-- Selection Effect -->
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="FilterBorder" Property="Background" Value="#007ACC"/>
+                                            <!-- Custom selection color -->
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.Resources>
+
+                <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal"/>
+                        <WrapPanel Orientation="Horizontal" Margin="10"/>
                     </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+                </ListView.ItemsPanel>
 
-                <ItemsControl.ItemTemplate>
+                <ListView.ItemTemplate>
                     <DataTemplate>
-                        <RadioButton Content="{Binding}" 
-                                     GroupName="Filters"
-                                     Style="{StaticResource CustomRadioButtonStyle}" 
-                                     IsChecked="{Binding DataContext.SelectedFilter, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
-                                     CommandParameter="{Binding}" />
+                        <Border Padding="10" CornerRadius="10">
+                            <TextBlock Text="{Binding}" FontSize="14" FontWeight="Bold"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Foreground="White"/>
+                        </Border>
                     </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                </ListView.ItemTemplate>
+            </ListView>
 
-            <!-- Date Picker (Right-Aligned) -->
-            <DatePicker Grid.Column="2" SelectedDate="{Binding SelectedDate, Mode=OneWay}"/>
+
+            <!-- Date Picker on the Right -->
+            <DatePicker Grid.Column="2" x:Name="dpSelectedDate"
+                SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
+                CalendarOpened="dpSelectedDate_CalendarOpened"
+                Margin="15,5"
+                Height="25"
+                Width="100" SelectedDateChanged="dpSelectedDate_SelectedDateChanged">
+            </DatePicker>
         </Grid>
+
+
+        <ListView Grid.Row="2" ItemsSource="{Binding Games}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="1" BorderBrush="Gray" Padding="10" Margin="10" CornerRadius="8">
+                        <StackPanel Orientation="Vertical">
+
+                            <!-- Home Team Row -->
+                            <Grid Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <!-- Logo -->
+                                    <ColumnDefinition Width="200"/>
+                                    <!-- Fixed Width for Team Name -->
+                                    <ColumnDefinition Width="Auto"/>
+                                    <!-- Score -->
+                                    <ColumnDefinition Width="*"/>
+                                    <!-- Sets -->
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="{Binding Teams.Home.Logo}" Width="40" Height="40" Stretch="Uniform" 
+                               Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding Teams.Home.Name}" FontSize="16" FontWeight="Bold" 
+                                   VerticalAlignment="Center" Grid.Column="1" Margin="5,0,10,0"
+                                   TextAlignment="Left" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding Scores.Home, TargetNullValue=0}" FontSize="16" FontWeight="Bold" 
+                                   VerticalAlignment="Center" Grid.Column="2" Margin="10" TextAlignment="Center"/>
+
+                                <StackPanel Orientation="Horizontal" Grid.Column="3" Margin="10,5,0,5" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Periods.First.Home}" FontSize="14" Margin="5"/>
+                                    <TextBlock Text="{Binding Periods.Second.Home}" FontSize="14" Margin="5"/>
+                                    <TextBlock Text="{Binding Periods.Third.Home}" FontSize="14" Margin="5"/>
+                                    <TextBlock Text="{Binding Periods.Fourth.Home}" FontSize="14" Margin="5"/>
+                                    <TextBlock Text="{Binding Periods.Fifth.Home}" FontSize="14" Margin="5"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Away Team Row -->
+                            <Grid Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <!-- Logo -->
+                                    <ColumnDefinition Width="200"/>
+                                    <!-- Fixed Width for Team Name -->
+                                    <ColumnDefinition Width="Auto"/>
+                                    <!-- Score -->
+                                    <ColumnDefinition Width="*"/>
+                                    <!-- Sets -->
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="{Binding Teams.Away.Logo}" Width="40" Height="40" Stretch="Uniform" 
+                               Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding Teams.Away.Name}" FontSize="16" FontWeight="Bold" 
+                                   VerticalAlignment="Center" Grid.Column="1" Margin="5,0,10,0"
+                                   TextAlignment="Left" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding Scores.Away,TargetNullValue=0}" FontSize="16" FontWeight="Bold" 
+                                   VerticalAlignment="Center" Grid.Column="2" Margin="10" TextAlignment="Center"/>
+
+                                <StackPanel Orientation="Horizontal" Grid.Column="3" Margin="10,5,0,5" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Periods.First.Away}" FontSize="14" Margin="5"/>
+                                    <TextBlock Text="{Binding Periods.Second.Away}" FontSize="14" Margin="5"/>
+                                    <TextBlock Text="{Binding Periods.Third.Away}" FontSize="14" Margin="5"/>
+                                    <TextBlock Text="{Binding Periods.Fourth.Away}" FontSize="14" Margin="5"/>
+                                    <TextBlock Text="{Binding Periods.Fifth.Away}" FontSize="14" Margin="5"/>
+                                </StackPanel>
+                            </Grid>
+
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </UserControl>

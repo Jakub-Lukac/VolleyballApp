@@ -19,16 +19,19 @@ namespace VolleyballApp.ViewModels
         private readonly DataService _dataService;
 
         [ObservableProperty]
-        private List<League> leagues = new();
+        private ObservableCollection<League> leagues = new();
 
         [ObservableProperty]
-        private List<Game> games = new();
+        private ObservableCollection<Game> games = new();
 
         [ObservableProperty]
         private List<string> filters = new() { "All", "Live", "Canceled", "Finished" };
 
         [ObservableProperty]
         private string selectedFilter = "All"; // Default to "All"
+
+        [ObservableProperty]
+        private League selectedLeague;
 
         [ObservableProperty]
         private DateTime selectedDate = DateTime.Now;
@@ -41,25 +44,54 @@ namespace VolleyballApp.ViewModels
 
         private async Task LoadLeaguesAsync()
         {
-            Leagues = await _dataService.GetLeaguesAsync();
+            Leagues =  new ObservableCollection<League>(await _dataService.GetLeaguesAsync());
             // Leagues is property of leagues, created through ObservableProperty
         }
 
         [RelayCommand]
         public async void SelectLeague(League selectedLeague)
         {
-            if(selectedLeague != null) 
+            if (selectedLeague != null)
             {
-                Games = await _dataService.GetGamesByDateAsync(DateTime.Now.ToString("yyyy-MM-dd"), selectedLeague.Id);   
+                SelectedLeague = selectedLeague; // Ensure selected league is updated
+                await LoadGames();
             }
         }
 
         [RelayCommand]
-        private void SelectFilter(string filter)
+        private async void SelectFilter(string filter)
         {
             SelectedFilter = filter;
-            MessageBox.Show(SelectedFilter);
+            await LoadGames();
         }
+
+        [RelayCommand]
+        private async void SelectDate(DateTime date)
+        {
+            SelectedDate = date;
+            await LoadGames();
+        }
+
+        private async Task LoadGames()
+        {
+            if (SelectedLeague == null)
+            {
+                Games = new ObservableCollection<Game>(); // Clear games if no league is selected
+                return;
+            }
+
+            var allGames = await _dataService.GetGamesByDateAsync(SelectedDate.ToString("yyyy-MM-dd"), SelectedLeague.Id);
+
+            // Apply filter
+            Games = SelectedFilter switch
+            {
+                "Live" => new ObservableCollection<Game>(allGames.Where(g => g.Status.Short == "S1" || g.Status.Short == "S2" || g.Status.Short == "S3" || g.Status.Short == "S4" || g.Status.Short == "S5").ToList()),
+                "Canceled" => new ObservableCollection<Game>(allGames.Where(g => g.Status.Short == "CANC").ToList()),
+                "Finished" => new ObservableCollection<Game>(allGames.Where(g => g.Status.Short == "FT").ToList()),
+                _ => new ObservableCollection<Game>(allGames) // Default case: show all games
+            };
+        }
+
 
     }
 }
