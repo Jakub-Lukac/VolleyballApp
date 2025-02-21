@@ -4,12 +4,82 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VolleyballApp.Views"
+             xmlns:viewmodels="clr-namespace:VolleyballApp.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:PlayerRostersViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="LightGreen">
-        <TextBlock Text="{Binding Message}" 
-                   FontSize="24" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center" />
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <!-- Player List & Form -->
+            <ColumnDefinition Width="3*"/>
+            <!-- Court -->
+        </Grid.ColumnDefinitions>
+
+        <!-- 🏐 Player Roster List -->
+        <StackPanel Grid.Row="0" Grid.Column="0" Margin="10">
+            <TextBlock Text="Roster" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+            <ListView ItemsSource="{Binding Players}"
+                      SelectedItem="{Binding SelectedPlayer, Mode=TwoWay}"
+                      DisplayMemberPath="DisplayText"
+                      SelectionMode="Single"
+                      Height="150"/>
+        </StackPanel>
+
+        <!-- 📝 Player Input Form -->
+        <StackPanel Grid.Row="1" Grid.Column="0" Margin="10">
+            <TextBlock Text="Add Player" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+            <TextBox Text="{Binding FirstName, Mode=TwoWay}" Margin="5"/>
+            <TextBox Text="{Binding LastName, Mode=TwoWay}" Margin="5"/>
+            <ComboBox ItemsSource="{Binding Positions}" 
+                      SelectedItem="{Binding SelectedPosition, Mode=TwoWay}" 
+                      Margin="5"/>
+            <TextBox Text="{Binding Height, Mode=TwoWay}" Margin="5"/>
+            <TextBox Text="{Binding JerseyNumber, Mode=TwoWay}" Margin="5"/>
+            <Button Content="Add to Roster" 
+                    Command="{Binding AddPlayerToRosterCommand}"
+                    Margin="5"/>
+        </StackPanel>
+
+        <!-- 🏐 Volleyball Court Grid -->
+        <ListView Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+                  ItemsSource="{Binding CourtPositions}"
+                  SelectedItem="{Binding SelectedCourtCell, Mode=TwoWay}"
+                  SelectionMode="Single"
+                  BorderThickness="1"
+                  Margin="10">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="3" Rows="2"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Black" BorderThickness="1" Padding="10">
+                        <TextBlock Text="{Binding PlayerNumber, TargetNullValue='Empty'}"
+                                   HorizontalAlignment="Center"
+                                   FontSize="16"/>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- ➕➖ Buttons for Assigning & Removing -->
+        <StackPanel Grid.Row="1" Grid.Column="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <Button Content="Add Player to Court"
+                    Command="{Binding AddPlayerToCourtCommand}"
+                    Width="150" Margin="5"/>
+            <Button Content="Remove Player"
+                    Command="{Binding RemovePlayerFromCourtCommand}"
+                    Width="150" Margin="5"/>
+        </StackPanel>
     </Grid>
 </UserControl>

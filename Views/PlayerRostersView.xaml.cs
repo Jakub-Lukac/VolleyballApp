@@ -21,10 +21,15 @@ namespace VolleyballApp.Views
     /// </summary>
     public partial class PlayerRostersView : UserControl
     {
-        public PlayerRostersView()
+        public PlayerRostersView(PlayerRostersViewModel vm)
         {
             InitializeComponent();
-            DataContext = new PlayerRostersViewModel();
+            DataContext = vm;
+        }
+
+        private void GridCell_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
