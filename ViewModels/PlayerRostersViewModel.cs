@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using static VolleyballApp.Models.PlayerRostersModels;
 
 namespace VolleyballApp.ViewModels
 {
@@ -34,6 +36,9 @@ namespace VolleyballApp.ViewModels
             if (string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName) || string.IsNullOrWhiteSpace(JerseyNumber))
                 return;
 
+            if (!int.TryParse(Height, out int height))
+                return;
+
             if (!int.TryParse(JerseyNumber, out int jerseyNum))
                 return;
 
@@ -42,7 +47,7 @@ namespace VolleyballApp.ViewModels
                 FirstName = FirstName,
                 LastName = LastName,
                 Position = SelectedPosition,
-                Height = Height,
+                Height = height,
                 JerseyNumber = jerseyNum
             });
 
@@ -55,6 +60,13 @@ namespace VolleyballApp.ViewModels
         {
             if (SelectedPlayer != null && SelectedCourtCell != null)
             {
+                // Check if the player is already assigned to another court position
+                if (CourtPositions.Any(cp => cp.PlayerId == SelectedPlayer.Id))
+                {
+                    // Player is already assigned to a court position, show a message or return
+                    return;
+                }
+
                 SelectedCourtCell.PlayerNumber = SelectedPlayer.JerseyNumber.ToString();
                 SelectedCourtCell.PlayerId = SelectedPlayer.Id;
                 SelectedCourtCell = null; // Unselect
@@ -71,39 +83,5 @@ namespace VolleyballApp.ViewModels
                 SelectedCourtCell = null;
             }
         }
-    }
-
-    public class Player
-    {
-        public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public Position Position { get; set; }
-        public string Height { get; set; }
-        public int JerseyNumber { get; set; }
-        public string DisplayText => $"{FirstName} {LastName} - #{JerseyNumber}";
-    }
-
-    public class CourtPosition : ObservableObject
-    {
-        public int PositionIndex { get; set; }
-
-        private string playerNumber;
-        public string PlayerNumber
-        {
-            get => playerNumber;
-            set => SetProperty(ref playerNumber, value);
-        }
-
-        public int? PlayerId { get; set; }
-    }
-
-    public enum Position
-    {
-        Setter,
-        OutsideHitter,
-        MiddleBlocker,
-        Libero,
-        OppositeHitter
     }
 }

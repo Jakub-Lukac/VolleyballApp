@@ -10,18 +10,18 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1.15*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
             <!-- Player List & Form -->
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="*"/>
             <!-- Court -->
         </Grid.ColumnDefinitions>
 
-        <!-- 🏐 Player Roster List -->
+        <!-- Player Roster List -->
         <StackPanel Grid.Row="0" Grid.Column="0" Margin="10">
             <TextBlock Text="Roster" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
             <ListView ItemsSource="{Binding Players}"
@@ -31,7 +31,7 @@
                       Height="150"/>
         </StackPanel>
 
-        <!-- 📝 Player Input Form -->
+        <!-- Player Input Form -->
         <StackPanel Grid.Row="1" Grid.Column="0" Margin="10">
             <TextBlock Text="Add Player" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
             <TextBox Text="{Binding FirstName, Mode=TwoWay}" Margin="5"/>
@@ -46,31 +46,36 @@
                     Margin="5"/>
         </StackPanel>
 
-        <!-- 🏐 Volleyball Court Grid -->
-        <ListView Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
-                  ItemsSource="{Binding CourtPositions}"
-                  SelectedItem="{Binding SelectedCourtCell, Mode=TwoWay}"
-                  SelectionMode="Single"
-                  BorderThickness="1"
-                  Margin="10">
+        <!-- Volleyball Court Grid -->
+        <ListView Grid.Row="0" Grid.Column="1"
+          ItemsSource="{Binding CourtPositions}"
+          SelectedItem="{Binding SelectedCourtCell, Mode=TwoWay}"
+          SelectionMode="Single"
+          BorderThickness="1"
+          Margin="10">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Columns="3" Rows="2"/>
+                    <UniformGrid Columns="3" Rows="2" Background="LightBlue"/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
 
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="Black" BorderThickness="1" Padding="10">
+                    <!-- Use Grid for centering -->
+                    <Grid Background="#F0F0F0" Margin="5">
                         <TextBlock Text="{Binding PlayerNumber, TargetNullValue='Empty'}"
-                                   HorizontalAlignment="Center"
-                                   FontSize="16"/>
-                    </Border>
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         FontSize="32"
+                         FontWeight="Bold"
+                         Foreground="Black"
+                         Background="LightBlue"/>
+                    </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
-        <!-- ➕➖ Buttons for Assigning & Removing -->
+        <!-- Buttons for Assigning & Removing -->
         <StackPanel Grid.Row="1" Grid.Column="1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">

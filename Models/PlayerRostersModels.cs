@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,19 +11,28 @@ namespace VolleyballApp.Models
     {
         public class Player
         {
+            public int Id { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
             public Position Position { get; set; }
-            public string Height { get; set; }
+            public int Height { get; set; }
             public int JerseyNumber { get; set; }
 
             public string DisplayText => $"{JerseyNumber} - {FirstName} {LastName} ({Position})";
         }
 
-        public class CourtPosition
+        public class CourtPosition : ObservableObject
         {
             public int PositionIndex { get; set; }
-            public string JerseyNumber { get; set; } = "";
+
+            private string playerNumber;
+            public string PlayerNumber
+            {
+                get => playerNumber;
+                set => SetProperty(ref playerNumber, value);
+            }
+
+            public int? PlayerId { get; set; }
         }
 
         public enum Position
