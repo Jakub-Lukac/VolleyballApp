@@ -115,7 +115,7 @@
                   SelectionMode="Single"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   Background="Transparent"
-                  BorderThickness="0">  
+                  BorderThickness="0">
 
                 <ListView.Resources>
                     <!-- Custom Style for Filter Items -->

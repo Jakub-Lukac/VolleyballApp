@@ -59,13 +59,5 @@ namespace VolleyballApp.Services
 
             return leagues;
         }
-
-        /*
-         * UI
-         * horizonal list of logos -> can click on logo to display games in that leage
-         * underneath bar (stretched) -> left option(Yesterday), middle option(Today), right option(Tomorrow)
-         * underneath that 4 buttons - Finished, Started, Postponed, Cancelled
-         * undearneath that display based on filters above list of games
-         */
     }
 }

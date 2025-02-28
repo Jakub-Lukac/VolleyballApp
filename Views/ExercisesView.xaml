@@ -5,11 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:VolleyballApp.Views"
              xmlns:viewmodels="clr-namespace:VolleyballApp.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewmodels:ExercisesViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.DataContext>
-        <viewmodels:ExercisesViewModel />
-    </UserControl.DataContext>
 
     <Grid Background="LightYellow">
         <Grid.RowDefinitions>
@@ -23,10 +21,11 @@
 
         <!-- Filters for Difficulty -->
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="10">
-            <ComboBox ItemsSource="{Binding DifficultyList}"
+            <ComboBox x:Name="cbExercises"
+                      ItemsSource="{Binding DifficultyList}"
                       SelectedItem="{Binding SelectedDifficulty, Mode=TwoWay}"
                       Width="150" Margin="5"
-                      Text="Select Difficulty" />
+                      Text="Select Difficulty" SelectionChanged="cbExercises_SelectionChanged" />
         </StackPanel>
 
         <!-- Exercise List (4x3 Grid Layout) -->

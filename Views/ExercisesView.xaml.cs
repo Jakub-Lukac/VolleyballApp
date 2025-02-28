@@ -21,10 +21,18 @@ namespace VolleyballApp.Views
     /// </summary>
     public partial class ExercisesView : UserControl
     {
-        public ExercisesView()
+        public ExercisesView(ExercisesViewModel vm)
         {
             InitializeComponent();
-            DataContext = new ExercisesViewModel();
+            DataContext = vm;
+        }
+
+        private void cbExercises_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataContext is ExercisesViewModel viewModel && e.AddedItems.Count > 0)
+            {
+                viewModel.FilterExercisesCommand.Execute(e.AddedItems[0]);
+            }
         }
     }
 }
