@@ -12,16 +12,7 @@
              d:DesignHeight="450" d:DesignWidth="800"
              Loaded="UserControl_Loaded">
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <!-- Merging external styles -->
-            <!--<ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Styles/GamesViewStyles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>-->
-        </ResourceDictionary>
-    </UserControl.Resources>
-
-    <Grid Background="LightBlue" ShowGridLines="True">
+    <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition Height=".2*"/>
             <!-- League selection -->
@@ -32,71 +23,27 @@
         </Grid.RowDefinitions>
 
         <!-- Leagues Selection (ListView) -->
-        <ListView Grid.Row="0" ItemsSource="{Binding Leagues}" 
-          x:Name="lwLeagues"
-          SelectionChanged="lwLeagues_SelectionChanged"
-          SelectedItem="{Binding SelectedLeague, Mode=TwoWay}" 
-          HorizontalAlignment="Stretch"
-          SelectionMode="Single"
-          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-          Background="Transparent"
-          BorderThickness="0">
-
-            <ListView.Resources>
-                <!-- Custom Style for League Items -->
-                <Style TargetType="ListViewItem">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="Margin" Value="10,0"/>
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListViewItem">
-                                <Border x:Name="LeagueBorder"
-                                Background="Transparent"
-                                CornerRadius="10"
-                                Padding="5">
-                                    <ContentPresenter/>
-                                </Border>
-
-                                <ControlTemplate.Triggers>
-                                    <!-- Hover Effect -->
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="LeagueBorder" Property="Background" Value="#444444"/>
-                                    </Trigger>
-
-                                    <!-- Selection Effect -->
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="LeagueBorder" Property="Background" Value="#007ACC"/>
-                                        <!-- Custom selection color -->
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListView.Resources>
-
+        <ListView Grid.Row="0" ItemsSource="{Binding Leagues}" SelectionChanged="lwLeagues_SelectionChanged"
+                  x:Name="lwLeagues">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" Margin="12"/>
+                    <VirtualizingStackPanel Orientation="Horizontal" />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
 
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border Padding="10" CornerRadius="10">
-                        <StackPanel Orientation="Vertical">
-                            <Image Source="{Binding Logo}" Width="60" Height="60"/>
-                            <TextBlock Text="{Binding Name}" FontSize="12" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
+                    <StackPanel Background="{StaticResource SecondaryBrush}"
+         Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+                        <Image Width="50" Height="50" Source="{Binding Logo}" Stretch="Uniform" />
+                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White" FontWeight="Bold"/>
+                    </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
-        <Grid Grid.Row="1" Margin="5">
+
+        <Grid Grid.Row="1" Background="{StaticResource PrimaryBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="400"/>
                 <!-- Filters List -->

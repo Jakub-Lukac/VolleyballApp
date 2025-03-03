@@ -6,23 +6,14 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <!-- Custom Colors -->
-            <Color x:Key="PrimaryColor">#f6e1b8</Color>
-            <Color x:Key="SecondaryColor">#c65f63</Color>
-            <Color x:Key="TertiaryColor">#84577c</Color>
-            <Color x:Key="FourthColor">#333644</Color>
-            <!-- Fourth Color Added -->
-
             <!-- Brushes -->
-            <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
-            <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource SecondaryColor}"/>
-            <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource TertiaryColor}"/>
-            <SolidColorBrush x:Key="FourthBrush" Color="{StaticResource FourthColor}"/>
-            <!-- Fourth Brush Added -->
+            <SolidColorBrush x:Key="PrimaryBrush" Color="#f6e1b8"/>
+            <SolidColorBrush x:Key="SecondaryBrush" Color="#c65f63"/>
+            <SolidColorBrush x:Key="TertiaryBrush" Color="#84577c"/>
+            <SolidColorBrush x:Key="FourthBrush" Color="#333644"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

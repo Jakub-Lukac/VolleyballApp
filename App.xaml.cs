@@ -11,6 +11,8 @@ namespace VolleyballApp
     {
         public App()
         {
+            InitializeComponent(); // to intialize resources (colors)
+
             ServiceCollection serviceCollection = new();
             serviceCollection.ConfigureServices();
 
