@@ -6,19 +6,18 @@
              xmlns:local="clr-namespace:VolleyballApp.Views"
              xmlns:viewmodels="clr-namespace:VolleyballApp.ViewModels" 
              xmlns:services="clr-namespace:VolleyballApp.Services"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DataContext="{d:DesignInstance Type=viewmodels:GamesViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Loaded="UserControl_Loaded">
 
-    <Grid ShowGridLines="True">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height=".2*"/>
             <!-- League selection -->
-            <RowDefinition Height=".15*"/>
+            <RowDefinition Height=".175*"/>
             <!-- Filters + Date Picker -->
-            <RowDefinition Height=".65*"/>
+            <RowDefinition Height=".625*"/>
             <!-- Main content (Games) -->
         </Grid.RowDefinitions>
 
@@ -27,14 +26,14 @@
                   x:Name="lwLeagues">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Horizontal" />
+                    <StackPanel Orientation="Horizontal" Background="{StaticResource FourthBrush}"/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
 
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Background="{StaticResource SecondaryBrush}"
-         Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+                    <StackPanel
+                        Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
                         <Image Width="50" Height="50" Source="{Binding Logo}" Stretch="Uniform" />
                         <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White" FontWeight="Bold"/>
                     </StackPanel>
@@ -43,14 +42,10 @@
         </ListView>
 
 
-        <Grid Grid.Row="1" Background="{StaticResource PrimaryBrush}">
+        <Grid Grid.Row="1" Background="{StaticResource FourthBrush}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="400"/>
-                <!-- Filters List -->
-                <ColumnDefinition Width="*"/>
-                <!-- Empty Space -->
-                <ColumnDefinition Width="Auto"/>
-                <!-- Date Picker -->
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <!-- Filters Selection (ListView) -->
@@ -60,9 +55,9 @@
                   SelectedItem="{Binding SelectedFilter, Mode=TwoWay}" 
                   HorizontalAlignment="Stretch"
                   SelectionMode="Single"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   Background="Transparent"
-                  BorderThickness="0">
+                  BorderThickness="0"
+                  Margin="10" ScrollViewer.VerticalScrollBarVisibility="Hidden">
 
                 <ListView.Resources>
                     <!-- Custom Style for Filter Items -->
@@ -85,12 +80,12 @@
                                     <ControlTemplate.Triggers>
                                         <!-- Hover Effect -->
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="FilterBorder" Property="Background" Value="#444444"/>
+                                            <Setter TargetName="FilterBorder" Property="Background" Value="{StaticResource SecondaryBrush}"/>
                                         </Trigger>
 
                                         <!-- Selection Effect -->
                                         <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="FilterBorder" Property="Background" Value="#007ACC"/>
+                                            <Setter TargetName="FilterBorder" Property="Background" Value="{StaticResource TertiaryBrush}"/>
                                             <!-- Custom selection color -->
                                         </Trigger>
                                     </ControlTemplate.Triggers>
@@ -129,10 +124,10 @@
         </Grid>
 
 
-        <ListView Grid.Row="2" ItemsSource="{Binding Games}">
+        <ListView Grid.Row="2" ItemsSource="{Binding Games}" Background="{StaticResource FourthBrush}" BorderBrush="Transparent" BorderThickness="0">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderThickness="1" BorderBrush="Gray" Padding="10" Margin="10" CornerRadius="8">
+                    <Border Padding="10" Margin="10" CornerRadius="8">
                         <StackPanel Orientation="Vertical">
 
                             <!-- Home Team Row -->

@@ -9,17 +9,47 @@
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="650" Width="1200"
-        WindowStyle="None" WindowStartupLocation="CenterScreen"
-        >
+        WindowStyle="None" WindowStartupLocation="CenterScreen">
 
-    <Grid ShowGridLines="True">
+    <Window.Resources>
+        <!-- Button Style -->
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource FourthBrush}" />
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}" CornerRadius="10" Padding="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Hover Effect -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource TertiaryBrush}"/>
+                            </Trigger>
+                            <!-- Click Effect -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource SecondaryBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width=".2*" ></ColumnDefinition>
+            <ColumnDefinition Width=".2*"></ColumnDefinition>
             <ColumnDefinition Width=".8*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-
-        <Grid Grid.Column="0" ShowGridLines="True">
+        <Grid Grid.Column="0" Background="{StaticResource FourthBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height=".4*"></RowDefinition>
                 <RowDefinition Height=".1*"></RowDefinition>
@@ -28,12 +58,12 @@
                 <RowDefinition Height=".4*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Button Grid.Row="1" Content="Live Games" Command="{Binding ShowGamesCommand}"></Button>
-            <Button Grid.Row="2" Content="Player Rosters" Command="{Binding ShowPlayerRostersCommand}"></Button>
-            <Button Grid.Row="3" Content="Exercises" Command="{Binding ShowExercisesCommand}"></Button>
+            <Button Grid.Row="1" Content="Live Games" Command="{Binding ShowGamesCommand}"/>
+            <Button Grid.Row="2" Content="Player Rosters" Command="{Binding ShowPlayerRostersCommand}"/>
+            <Button Grid.Row="3" Content="Exercises" Command="{Binding ShowExercisesCommand}"/>
         </Grid>
 
-        <Grid Grid.Column="1" ShowGridLines="True">
+        <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height=".05*"></RowDefinition>
                 <RowDefinition Height=".95*"></RowDefinition>
