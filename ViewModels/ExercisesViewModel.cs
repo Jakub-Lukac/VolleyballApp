@@ -47,12 +47,17 @@ namespace VolleyballApp.ViewModels
             FilteredExercises = Exercises;
         }
 
-        [RelayCommand]
-        private void FilterExercises(Difficulty difficulty)
+       [RelayCommand]
+       private void FilterExercises(Difficulty difficulty)
         {
-            FilteredExercises = Exercises.Where(e => e.Difficulty == difficulty).ToList();
+            if(difficulty == Difficulty.All) 
+            {
+                FilteredExercises = Exercises;
+            }
+            else
+            {
+                FilteredExercises = Exercises.Where(e => e.Difficulty == difficulty.ToString()).ToList();
+            }
         }
     }
-
-   
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,16 +11,25 @@ namespace VolleyballApp.Models
     {
         public enum Difficulty
         {
-            Begginer,
+            Beginner,
             Intermediate,
-            Expert
+            Expert,
+            All,
         }
         public class Exercise
         {
+            public int ExerciseId { get; set; }
             public string Title { get; set; }
-            public Difficulty Difficulty { get; set; }
+            public string Difficulty { get; set; }
             public string Description { get; set; }
             public string Time { get; set; }
+        }
+
+        public class ExeriseData : DbContext
+        {
+            public ExeriseData() : base("MyExercisesData") { }
+
+            public DbSet<Exercise> Exercises { get; set; } // creates exercises table
         }
     }
 }

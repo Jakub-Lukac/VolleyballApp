@@ -13,6 +13,9 @@ namespace VolleyballApp.Services
     public static class VolleyballAPI
     {
         private static readonly string BaseUrl = "https://v1.volleyball.api-sports.io";
+
+        // fetching api key from enviromental varialbes
+        // good practise, rather than hard coded string inside the code it self
         private static readonly string ApiKey = Environment.GetEnvironmentVariable("API_KEY");
 
         private static async Task<string> HttpGet(string endpoint, Dictionary<string, string> queryParams = null)
