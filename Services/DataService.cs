@@ -14,7 +14,7 @@ namespace VolleyballApp.Services
     {
         #region Games
         private static List<League> _leagues;
-        private readonly List<int> _leagueIds = new() { 57, 101 };
+        private readonly List<int> _leagueIds = new() { 51, 104, 113, 139, 175,  };
 
         private static List<Game> _games;
 
