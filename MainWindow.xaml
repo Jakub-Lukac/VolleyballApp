@@ -14,8 +14,8 @@
     <Window.Resources>
         <!-- Button Style -->
         <Style TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource FourthBrush}" />
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource FourthBrush}"/>
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Padding" Value="10"/>
             <Setter Property="Margin" Value="5"/>
@@ -31,10 +31,6 @@
                             <!-- Hover Effect -->
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource TertiaryBrush}"/>
-                            </Trigger>
-                            <!-- Click Effect -->
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource SecondaryBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -58,6 +54,7 @@
                 <RowDefinition Height=".4*"></RowDefinition>
             </Grid.RowDefinitions>
 
+            <Image Margin="50" Grid.Row="0" Source="./Images/Volleyball.png"></Image>
             <Button Grid.Row="1" Content="Live Games" Command="{Binding ShowGamesCommand}"/>
             <Button Grid.Row="2" Content="Player Rosters" Command="{Binding ShowPlayerRostersCommand}"/>
             <Button Grid.Row="3" Content="Exercises" Command="{Binding ShowExercisesCommand}"/>

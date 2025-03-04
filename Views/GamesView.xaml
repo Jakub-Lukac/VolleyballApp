@@ -28,8 +28,6 @@
             <ListView.Resources>
                 <!-- Custom Style for League Logos -->
                 <Style TargetType="ListViewItem">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="BorderThickness" Value="0"/>
                     <Setter Property="Padding" Value="0"/>
                     <Setter Property="Margin" Value="10"/>
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -51,6 +49,8 @@
 
                                     <!-- Selection Effect -->
                                     <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="FilterBorder" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+                                        <Setter TargetName="FilterBorder" Property="BorderThickness" Value="1"/>
                                         <Setter TargetName="FilterBorder" Property="Background" Value="{StaticResource TertiaryBrush}"/>
                                         <!-- Custom selection color -->
                                     </Trigger>
@@ -76,7 +76,6 @@
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
-
         </ListView>
 
 
@@ -101,8 +100,6 @@
                 <ListView.Resources>
                     <!-- Custom Style for Filter Items -->
                     <Style TargetType="ListViewItem">
-                        <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="BorderThickness" Value="0"/>
                         <Setter Property="Padding" Value="0"/>
                         <Setter Property="Margin" Value="5"/>
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -124,6 +121,8 @@
 
                                         <!-- Selection Effect -->
                                         <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="FilterBorder" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+                                            <Setter TargetName="FilterBorder" Property="BorderThickness" Value="1"/>
                                             <Setter TargetName="FilterBorder" Property="Background" Value="{StaticResource TertiaryBrush}"/>
                                             <!-- Custom selection color -->
                                         </Trigger>
