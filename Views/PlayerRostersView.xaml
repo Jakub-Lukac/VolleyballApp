@@ -8,10 +8,10 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:PlayerRostersViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="10">
+    <Grid Background="{StaticResource FourthBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="1.15*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="1.15*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -22,28 +22,159 @@
         </Grid.ColumnDefinitions>
 
         <!-- Player Roster List -->
-        <StackPanel Grid.Row="0" Grid.Column="0" Margin="10">
-            <TextBlock Text="Roster" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+        <StackPanel Grid.Row="0" Grid.Column="0" Margin="5,10">
+            <TextBlock Text="Roster" FontSize="18" FontWeight="Bold" Margin="0,0,0,10" Foreground="{StaticResource PrimaryBrush}"/>
             <ListView ItemsSource="{Binding Players}"
                       SelectedItem="{Binding SelectedPlayer, Mode=TwoWay}"
-                      DisplayMemberPath="DisplayText"
                       SelectionMode="Single"
-                      Height="150"/>
+                      Height="250"
+                      BorderThickness="0"
+                      Background="{StaticResource FourthBrush}"
+                      ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{StaticResource PrimaryBrush}" BorderBrush="{StaticResource TertiaryBrush}" BorderThickness="1" CornerRadius="5" Margin="5" Padding="10">
+                            <TextBlock Text="{Binding DisplayText}" FontWeight="Bold" Foreground="{StaticResource FourthBrush}" Background="Gray" FontSize="14"></TextBlock>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.Resources>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="5,0,10,0"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <Border x:Name="FilterBorder"
+                                         Background="Transparent"
+                                         CornerRadius="10"
+                                         Padding="5">      
+                                        <ContentPresenter/>
+                                    </Border>
+
+                                    <ControlTemplate.Triggers>
+                                        <!-- Hover Effect -->
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="FilterBorder" Property="Background" Value="{StaticResource PrimaryBrush}"/>
+                                        </Trigger>
+
+                                        <!-- Selection Effect -->
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="FilterBorder" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+                                            <Setter TargetName="FilterBorder" Property="BorderThickness" Value="1"/>
+                                            <Setter TargetName="FilterBorder" Property="Background" Value="{StaticResource TertiaryBrush}"/>
+                                            <!-- Custom selection color -->
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.Resources>
+            </ListView>
         </StackPanel>
+
 
         <!-- Player Input Form -->
         <StackPanel Grid.Row="1" Grid.Column="0" Margin="10">
-            <TextBlock Text="Add Player" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
-            <TextBox Text="{Binding FirstName, Mode=TwoWay}" Margin="5"/>
-            <TextBox Text="{Binding LastName, Mode=TwoWay}" Margin="5"/>
-            <ComboBox ItemsSource="{Binding Positions}" 
-                      SelectedItem="{Binding SelectedPosition, Mode=TwoWay}" 
-                      Margin="5"/>
-            <TextBox Text="{Binding Height, Mode=TwoWay}" Margin="5"/>
-            <TextBox Text="{Binding JerseyNumber, Mode=TwoWay}" Margin="5"/>
-            <Button Content="Add to Roster" 
+            <TextBlock Text="Add Player" FontSize="18" Foreground="{StaticResource PrimaryBrush}" FontWeight="Bold" Margin="0,0,0,10"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="5,0,10,0" Text="First Name" FontSize="15" Foreground="{StaticResource PrimaryBrush}" FontWeight="DemiBold"></TextBlock>
+                <TextBox Grid.Column="1" Width="300" Text="{Binding FirstName, Mode=TwoWay}" Margin="5" Background="LightGray" BorderBrush="{StaticResource TertiaryBrush}" BorderThickness="1" Padding="5"/>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="5,0,10,0" Text="Last Name" FontSize="15" Foreground="{StaticResource PrimaryBrush}" FontWeight="DemiBold"></TextBlock>
+                <TextBox Grid.Column="1" Width="300" Text="{Binding LastName, Mode=TwoWay}" Margin="5" Background="Gray" BorderBrush="{StaticResource TertiaryBrush}" BorderThickness="1" Padding="5"/>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="5,0,10,0" Text="Position" FontSize="15" Foreground="{StaticResource PrimaryBrush}" FontWeight="DemiBold"></TextBlock>
+                <ComboBox Width="300" Grid.Column="1" ItemsSource="{Binding Positions}" 
+                    SelectedItem="{Binding SelectedPosition, Mode=TwoWay}" 
+                          Background="LightGray"
+                    Margin="5" BorderBrush="{StaticResource TertiaryBrush}" BorderThickness="1"
+                    >
+                    <!-- Style for Dropdown Items -->
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="{StaticResource SecondaryBrush}"/>
+                            <Setter Property="Padding" Value="5"/>
+                            <Setter Property="Margin" Value="2"/>
+                            <Setter Property="FontSize" Value="14"/>
+
+                            <!-- Override default template to remove light blue hover -->
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ComboBoxItem">
+                                        <Border x:Name="ItemBorder" Background="{TemplateBinding Background}" Padding="5">
+                                            <ContentPresenter />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <!-- Hover Effect Fix -->
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource TertiaryBrush}"/>
+                                                <Setter Property="Foreground" Value="White"/>
+                                                <Setter Property="FontWeight" Value="Bold"/>
+                                            </Trigger>
+
+                                            <!-- Selected Item Styling -->
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource TertiaryBrush}"/>
+                                                <Setter Property="Foreground" Value="White"/>
+                                                <Setter Property="FontWeight" Value="Bold"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+
+                    <!-- Style for the selected item in the ComboBox when collapsed -->
+                    <ComboBox.Resources>
+                        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                            <Style.Setters>
+                                <!-- Set styles for the selected item (displayed text) -->
+                                <Setter Property="Foreground" Value="{StaticResource FourthBrush}"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Style.Setters>
+                        </Style>
+                    </ComboBox.Resources>
+                </ComboBox>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="5,0,10,0" Text="Heigth (cm)" FontSize="15" Foreground="{StaticResource PrimaryBrush}" FontWeight="DemiBold"></TextBlock>
+                <TextBox Width="300" Grid.Column="1" Text="{Binding Height, Mode=TwoWay}" Margin="5" Background="Gray" BorderBrush="{StaticResource TertiaryBrush}" BorderThickness="1" Padding="5"/>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="5,0,10,0" Text="Jersey Number" FontSize="15" Foreground="{StaticResource PrimaryBrush}" FontWeight="DemiBold"></TextBlock>
+                <TextBox Width="300" Grid.Column="1" Text="{Binding JerseyNumber, Mode=TwoWay}" Margin="5" Background="LightGray" BorderBrush="{StaticResource TertiaryBrush}" BorderThickness="1" Padding="5"/>
+            </Grid>
+            <Button Content="Add to Roster"
+                    Background="{StaticResource SecondaryBrush}"
                     Command="{Binding AddPlayerToRosterCommand}"
-                    Margin="5"/>
+                    Margin="10" BorderThickness="0"/>
         </StackPanel>
 
         <!-- Volleyball Court Grid -->
@@ -51,8 +182,44 @@
           ItemsSource="{Binding CourtPositions}"
           SelectedItem="{Binding SelectedCourtCell, Mode=TwoWay}"
           SelectionMode="Single"
-          BorderThickness="1"
-          Margin="10">
+          BorderThickness="0"
+          Background="{StaticResource FourthBrush}">
+            <ListView.Resources>
+                <!-- Custom Style for Filter Items -->
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <Border x:Name="FilterBorder"
+                                     Background="Transparent"
+                                     CornerRadius="10"
+                                     Padding="5">      
+                                    <ContentPresenter/>
+                                </Border>
+
+                                <ControlTemplate.Triggers>
+                                    <!-- Hover Effect -->
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="FilterBorder" Property="Background" Value="{StaticResource PrimaryBrush}"/>
+                                    </Trigger>
+
+                                    <!-- Selection Effect -->
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="FilterBorder" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+                                        <Setter TargetName="FilterBorder" Property="BorderThickness" Value="1"/>
+                                        <Setter TargetName="FilterBorder" Property="Background" Value="{StaticResource TertiaryBrush}"/>
+                                        <!-- Custom selection color -->
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.Resources>
+
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="3" Rows="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -61,16 +228,14 @@
 
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <!-- Use Grid for centering -->
-                    <Border Background="#F0F0F0" Margin="5">
+                    <Border Background="{StaticResource PrimaryBrush}" Margin="5" BorderBrush="{StaticResource FourthBrush}" BorderThickness="1" CornerRadius="5">
                         <TextBlock Text="{Binding PlayerNumber, TargetNullValue='Empty'}"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         FontSize="32"
-                         Padding="10"
-                         FontWeight="Bold"
-                         Foreground="Black"
-                         Background="LightBlue"/>
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="32"
+                                   Padding="10"
+                                   FontWeight="Bold"
+                                   Foreground="Black"/>
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -82,10 +247,16 @@
                     VerticalAlignment="Center">
             <Button Content="Add Player to Court"
                     Command="{Binding AddPlayerToCourtCommand}"
-                    Width="150" Margin="5"/>
+                    Width="250" 
+                    Background="{StaticResource SecondaryBrush}" 
+                    Foreground="White"
+                    Margin="5" BorderThickness="0"/>
             <Button Content="Remove Player"
                     Command="{Binding RemovePlayerFromCourtCommand}"
-                    Width="150" Margin="5"/>
+                    Width="250" 
+                    Background="{StaticResource PrimaryBrush}"
+                    Foreground="{StaticResource FourthBrush}"
+                    Margin="5" BorderThickness="0"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -11,7 +11,22 @@
              d:DesignHeight="450" d:DesignWidth="800"
              Loaded="UserControl_Loaded">
 
-    <Grid>
+    <UserControl.Resources>
+        <Style x:Key="CustomDatePickerStyle" TargetType="DatePicker">
+            <!-- Set Background of the DatePicker -->
+            <Setter Property="Background" Value="{StaticResource TertiaryBrush}" />
+
+            <!-- Set Border Color and Thickness -->
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
+            <Setter Property="BorderThickness" Value="2" />
+
+            <!-- Set Font properties -->
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Padding" Value="10,5,10,0" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="{StaticResource FourthBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height=".2*"/>
             <!-- League selection -->
@@ -24,7 +39,7 @@
         <!-- Leagues Selection (ListView) -->
         <ListView Grid.Row="0" ItemsSource="{Binding Leagues}" SelectionChanged="lwLeagues_SelectionChanged"
                   x:Name="lwLeagues" SelectionMode="Single" BorderThickness="0" BorderBrush="Transparent"
-                  HorizontalAlignment="Stretch">
+                  HorizontalAlignment="Stretch" Background="{StaticResource FourthBrush}">
             <ListView.Resources>
                 <!-- Custom Style for League Logos -->
                 <Style TargetType="ListViewItem">
@@ -35,9 +50,9 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="ListViewItem">
                                 <Border x:Name="FilterBorder"
-                     Background="Transparent"
-                     CornerRadius="10"
-                     Padding="10">
+                         Background="Transparent"
+                         CornerRadius="10"
+                         Padding="10">
                                     <ContentPresenter/>
                                 </Border>
 
@@ -153,12 +168,13 @@
 
             <!-- Date Picker on the Right -->
             <DatePicker Grid.Column="2" x:Name="dpSelectedDate"
-                SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
-                CalendarOpened="dpSelectedDate_CalendarOpened"
-                Margin="15,5"
-                Height="25"
-                Width="100" SelectedDateChanged="dpSelectedDate_SelectedDateChanged">
-            </DatePicker>
+                    SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
+                    CalendarOpened="dpSelectedDate_CalendarOpened"
+                    Margin="15,5"
+                    Height="35"
+                    Width="150"
+                    SelectedDateChanged="dpSelectedDate_SelectedDateChanged"
+                    Style="{StaticResource CustomDatePickerStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" UseLayoutRounding="False" Background="#FF84577C" />
         </Grid>
 
 

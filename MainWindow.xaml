@@ -39,7 +39,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid>
+    <Grid Background="{StaticResource FourthBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width=".2*"></ColumnDefinition>
             <ColumnDefinition Width=".8*"></ColumnDefinition>

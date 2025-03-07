@@ -14,6 +14,7 @@ namespace VolleyballApp.ViewModels
         [ObservableProperty] private Player selectedPlayer;
         [ObservableProperty] private CourtPosition selectedCourtCell;
 
+        private int _nextPlayerId = 1;
         [ObservableProperty] private string firstName;
         [ObservableProperty] private string lastName;
         [ObservableProperty] private Position selectedPosition;
@@ -44,6 +45,7 @@ namespace VolleyballApp.ViewModels
 
             Players.Add(new Player
             {
+                Id = _nextPlayerId++,
                 FirstName = FirstName,
                 LastName = LastName,
                 Position = SelectedPosition,
@@ -52,7 +54,7 @@ namespace VolleyballApp.ViewModels
             });
 
             // Clear fields
-            FirstName = LastName = Height = JerseyNumber = string.Empty;
+            //FirstName = LastName = Height = JerseyNumber = string.Empty;
         }
 
         [RelayCommand]
