@@ -98,7 +98,7 @@ Fetches volleyball games for a specific date.
 
 Parameters: date (string) - The date in YYYY-MM-DD format.
 
-Returns: ```Task<List<Game>>``` - A list of games.
+Returns: `Task<List<Game>>` - A list of games.
 
 ### GetLeaguesLogosAsync(List<int> leagueIds)
 
@@ -106,10 +106,137 @@ Retrieves league logos for given league IDs.
 
 Parameters: leagueIds (List<int>) - A list of league IDs.
 
-Returns: ```Task<List<League>>``` - A list of league details including logos.
+Returns: `Task<List<League>>` - A list of league details including logos.
 
 ## Error Handling
 
 Ensures successful HTTP responses using response.EnsureSuccessStatusCode().
 
 Uses try-catch (recommended to implement) to handle request failures.
+
+# GamesViewModel
+
+## Overview
+
+The GamesViewModel class is responsible for managing the state and logic of the volleyball games view in the application. It interacts with the DataService to fetch leagues and games, providing filtering options for users based on game status and date.
+
+## Features
+
+Fetch and display a list of volleyball leagues.
+
+Load games based on the selected league and date.
+
+Filter games by status (All, Live, Canceled, Finished).
+
+Uses CommunityToolkit.Mvvm for observable properties and commands.
+
+## Prerequisites
+
+.NET 6.0 or later
+
+CommunityToolkit.Mvvm package installed
+
+DataService implemented to fetch league and game data
+
+## Properties
+
+**Leagues** (ObservableCollection)
+
+Stores the list of available leagues fetched from the API.
+
+**Games** (ObservableCollection)
+
+Stores the list of games based on the selected league, date, and filter.
+
+**Filters** (List)
+
+A predefined list of game filters: All, Live, Canceled, Finished.
+
+**SelectedFilter** (string)
+
+The currently selected filter (default is All).
+
+**SelectedLeague** (League)
+
+The currently selected league for fetching games.
+
+**SelectedDate** (DateTime)
+
+The selected date for filtering games (default is today).
+
+## Commands
+
+**SelectLeagueCommand**
+
+Description: Sets the selected league and loads corresponding games.
+
+Parameters: League selectedLeague
+
+### Usage:
+
+```
+SelectLeagueCommand.Execute(myLeague);
+```
+
+**SelectFilterCommand**
+
+Description: Changes the selected filter and reloads games accordingly.
+
+Parameters: string filter
+
+### Usage:
+
+```
+SelectFilterCommand.Execute("Live");
+```
+
+**SelectDateCommand**
+
+Description: Changes the selected date and reloads games.
+
+Parameters: DateTime date
+
+### Usage:
+
+```
+SelectDateCommand.Execute(DateTime.Now.AddDays(-1));
+```
+
+## Methods
+
+**LoadLeaguesAsync()**
+
+Description: Fetches available leagues asynchronously and updates the Leagues collection.
+
+### Usage: Called in the constructor.
+
+**LoadGames()**
+
+Description: Fetches games based on the selected league, date, and filter.
+
+### Usage: Called when the user selects a league, filter, or date.
+
+## Filtering Logic:
+
+**Live**: Games with status S1, S2, S3, S4, S5
+
+**Canceled**: Games with status CANC
+
+**Finished**: Games with status FT
+
+**All**: Displays all games
+
+## Usage Example
+
+```
+var viewModel = new GamesViewModel(dataService);
+viewModel.SelectLeagueCommand.Execute(selectedLeague);
+viewModel.SelectDateCommand.Execute(DateTime.Now);
+viewModel.SelectFilterCommand.Execute("Live");
+```
+
+## Error Handling
+
+Ensures Games is cleared if no league is selected.
+
+Uses await for asynchronous data fetching to prevent blocking UI.
