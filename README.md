@@ -240,3 +240,41 @@ viewModel.SelectFilterCommand.Execute("Live");
 Ensures Games is cleared if no league is selected.
 
 Uses await for asynchronous data fetching to prevent blocking UI.
+
+# Dependency Injection (DI) in VolleyballApp
+
+## Overview
+
+**Dependency Injection (DI)** is used in VolleyballApp to manage dependencies efficiently. It improves modularity, testability, and maintainability by ensuring that components receive their dependencies from an external source rather than creating them internally.
+
+The application utilizes Microsoft.Extensions.DependencyInjection for setting up DI, allowing seamless integration of services, view models, and views.
+
+## Why Use Dependency Injection?
+
+**Decouples components** → Reduces tight coupling between classes.
+**Improves testability** → Dependencies can be mocked for unit testing.
+**Enhances maintainability** → Easier to update and modify services.
+**Centralized configuration** → All services are registered in one place.
+
+## How Dependency Injection Works in the App
+
+Services, ViewModels, and Views are registered in **\*ServiceCollectionExtensions.ConfigureServices().**
+App initializes DI, builds the service provider, and resolves MainWindow.
+When a **ViewModel** is needed, the system automatically injects its dependencies **(e.g., GamesViewModel receives DataService).**
+
+## Example: Injecting a Service into a ViewModel
+
+Instead of manually creating a **DataService instance** inside GamesViewModel, DI provides it automatically.
+
+```
+public partial class GamesViewModel : ObservableObject
+{
+    private readonly DataService _dataService;
+
+    public GamesViewModel(DataService dataService)
+    {
+        _dataService = dataService;
+        _ = LoadLeaguesAsync();
+    }
+}
+```
