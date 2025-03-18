@@ -98,7 +98,7 @@ Fetches volleyball games for a specific date.
 
 Parameters: date (string) - The date in YYYY-MM-DD format.
 
-Returns: **Task<List<Game>>** - A list of games.
+Returns: ```Task<List<Game>>``` - A list of games.
 
 ### GetLeaguesLogosAsync(List<int> leagueIds)
 
@@ -106,7 +106,7 @@ Retrieves league logos for given league IDs.
 
 Parameters: leagueIds (List<int>) - A list of league IDs.
 
-Returns: **Task<List<League>>** - A list of league details including logos.
+Returns: ```Task<List<League>>``` - A list of league details including logos.
 
 ## Error Handling
 
