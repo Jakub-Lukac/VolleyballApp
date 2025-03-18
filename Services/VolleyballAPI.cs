@@ -47,6 +47,7 @@ namespace VolleyballApp.Services
             return JsonSerializer.Deserialize<GameResponse>(json)?.Response ?? [];
         }
 
+        // check return type of method
         public static async Task<List<League>> GetLeaguesLogosAsync(List<int> leagueIds)
         {
             var leagues = new List<League>();
