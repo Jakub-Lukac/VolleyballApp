@@ -22,15 +22,36 @@ namespace VolleyballApp.Tests
             _viewModel = new ExercisesViewModel(_mockDataService.Object);
         }
 
+
         [Test]
-        public void FilterExercises_ShouldFilterByDifficulty()
+        public void FilterExercises_ShouldFilterByDifficultyBeginner()
         {
             // Arrange
             _viewModel.Exercises = new List<Exercise>
             {
-                new Exercise { Title = "Exercise 1", Difficulty = "Easy" },
+                new Exercise { Title = "Exercise 1", Difficulty = "Beginner" },
                 new Exercise { Title = "Exercise 2", Difficulty = "Intermediate" },
-                new Exercise { Title = "Exercise 3", Difficulty = "Hard" }
+                new Exercise { Title = "Exercise 3", Difficulty = "Expert" }
+            };
+
+            // Act
+            _viewModel.FilterExercises(Difficulty.Beginner);
+
+            // Assert
+            Assert.That(_viewModel.FilteredExercises.Count, Is.EqualTo(1));
+            Assert.That(_viewModel.FilteredExercises.First().Difficulty, Is.EqualTo("Beginner"));
+        }
+
+
+        [Test]
+        public void FilterExercises_ShouldFilterByDifficultyIntermediate()
+        {
+            // Arrange
+            _viewModel.Exercises = new List<Exercise>
+            {
+                new Exercise { Title = "Exercise 1", Difficulty = "Beginner" },
+                new Exercise { Title = "Exercise 2", Difficulty = "Intermediate" },
+                new Exercise { Title = "Exercise 3", Difficulty = "Expert" }
             };
 
             // Act
@@ -42,14 +63,33 @@ namespace VolleyballApp.Tests
         }
 
         [Test]
+        public void FilterExercises_ShouldFilterByDifficultyExpert()
+        {
+            // Arrange
+            _viewModel.Exercises = new List<Exercise>
+            {
+                new Exercise { Title = "Exercise 1", Difficulty = "Beginner" },
+                new Exercise { Title = "Exercise 2", Difficulty = "Intermediate" },
+                new Exercise { Title = "Exercise 3", Difficulty = "Expert" }
+            };
+
+            // Act
+            _viewModel.FilterExercises(Difficulty.Expert);
+
+            // Assert
+            Assert.That(_viewModel.FilteredExercises.Count, Is.EqualTo(1));
+            Assert.That(_viewModel.FilteredExercises.First().Difficulty, Is.EqualTo("Expert"));
+        }
+
+        [Test]
         public void FilterExercises_WithAll_ShouldReturnAllExercises()
         {
             // Arrange
             _viewModel.Exercises = new List<Exercise>
             {
-                new Exercise { Title = "Exercise 1", Difficulty = "Easy" },
+                new Exercise { Title = "Exercise 1", Difficulty = "Beginner" },
                 new Exercise { Title = "Exercise 2", Difficulty = "Intermediate" },
-                new Exercise { Title = "Exercise 3", Difficulty = "Hard" }
+                new Exercise { Title = "Exercise 3", Difficulty = "Expert" }
             };
 
             // Act
