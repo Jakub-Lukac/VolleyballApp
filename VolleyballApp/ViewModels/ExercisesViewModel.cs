@@ -13,10 +13,7 @@ namespace VolleyballApp.ViewModels
 {
     public partial class ExercisesViewModel : ObservableObject
     {
-        private readonly DataService _dataService;
-
-        [ObservableProperty]
-        public string message = "This is Exercises Screen";
+        private readonly DataService _dataService; // Dependency Injection
 
         [ObservableProperty]
         private List<Exercise> exercises;

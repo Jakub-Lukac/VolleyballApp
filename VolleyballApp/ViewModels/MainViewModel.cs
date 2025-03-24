@@ -7,6 +7,7 @@ namespace VolleyballApp.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
+        // DI
         private readonly GamesView _gamesView;
         private readonly PlayerRostersView _playerRostersView;
         private readonly ExercisesView _exercisesView;

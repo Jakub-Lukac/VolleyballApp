@@ -54,7 +54,7 @@ namespace VolleyballApp.ViewModels
             });
 
             // Clear fields
-            //FirstName = LastName = Height = JerseyNumber = string.Empty;
+            FirstName = LastName = Height = JerseyNumber = string.Empty;
         }
 
         [RelayCommand]
