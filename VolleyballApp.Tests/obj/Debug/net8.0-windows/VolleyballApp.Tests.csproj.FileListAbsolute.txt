@@ -307,3 +307,4 @@ C:\Users\Jakub\OneDrive - Atlantic TU\y2s2\OOP\VolleyballApp\VolleyballApp.Tests
 C:\Users\Jakub\OneDrive - Atlantic TU\y2s2\OOP\VolleyballApp\VolleyballApp.Tests\obj\Debug\net8.0-windows\VolleyballApp.Tests.pdb
 C:\Users\Jakub\OneDrive - Atlantic TU\y2s2\OOP\VolleyballApp\VolleyballApp.Tests\obj\Debug\net8.0-windows\VolleyballApp.Tests.genruntimeconfig.cache
 C:\Users\Jakub\OneDrive - Atlantic TU\y2s2\OOP\VolleyballApp\VolleyballApp.Tests\obj\Debug\net8.0-windows\ref\VolleyballApp.Tests.dll
+C:\Users\Jakub\OneDrive - Atlantic TU\y2s2\OOP\VolleyballApp\VolleyballApp.Tests\bin\Debug\net8.0-windows\Images\cross.png

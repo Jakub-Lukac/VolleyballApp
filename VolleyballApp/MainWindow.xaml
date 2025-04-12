@@ -65,7 +65,7 @@
                 <RowDefinition Height=".05*"></RowDefinition>
                 <RowDefinition Height=".95*"></RowDefinition>
             </Grid.RowDefinitions>
-
+  
             <ContentControl Grid.Row="1" Content="{Binding CurrentView}" />
         </Grid>
     </Grid>
